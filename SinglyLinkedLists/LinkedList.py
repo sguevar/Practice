@@ -90,6 +90,47 @@ class LinkedList:
             return 0
         return 1 + self.recursion_length(node.next)
 
+    def swap_node(self, node1, node2):
+        if node1 == node2:                              # If the node are the same, then we do nothing so this is the
+            return                                      # first case we should look for
+        current = self.head
+        prev = None
+        while current and current.data != node1:        # If current node is not the one we are looking for, we save the
+            prev = current                              # we save the old nodes and the current node moves forward
+            current = current.next
+
+        current_2 = self.head
+        prev_2 = None
+        while current_2 and current_2.data != node2:    # This also checks if we are not at the end of the linked list
+            prev_2 = current_2
+            current_2 = current_2.next
+
+        if not current or not current_2:                # This checks if one of the nodes is missing in the linked list,
+            return                                      # in this case we cannot swap
+
+        if prev:                                        # If prev exists, it means current is not the head. We then swap
+            prev.next = current_2                       # with the second node, if the current node was the head, then
+        else:                                           # we swap by making the second node the head.
+            self.head = current_2
+
+        if prev_2:
+            prev_2.next = current
+        else:
+            self.head = current
+
+        current.next, current_2.next = current_2.next, current.next
+
+    def reverse_iterative(self):
+        prev = None                                     # We start with the head, for each current node, we store the
+        current = self.head                             # next node of the current node. We then turn the next node into
+        while current:                                  # the node before the current one. The previous node is now the
+            nxt = current.next                          # current and the current node is now the next node we stored
+            current.next = prev                         # in the beginning, the prev node is then turned into the head.
+            prev = current
+            current = nxt
+        self.head = prev
+
+
 
 lst1 = LinkedList()
 lst1.append("A")
@@ -101,4 +142,5 @@ lst1.delete_by_pos(0)
 lst1.insert_after_node(lst1.head.next, "E")
 print(lst1.iter_length())
 print(lst1.recursion_length(lst1.head))
+lst1.swap_node("A", "E")
 lst1.print_linked_list()
