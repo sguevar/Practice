@@ -130,17 +130,60 @@ class LinkedList:
             current = nxt
         self.head = prev
 
+    def recursive_reverse(self):                        # Make a method inside the method that deals with one case and
+        def reverse(current, previous):                 # Use recursion to go through the entire list.
+            if not current:                             # If we reach the end of the list, return the previous
+                return previous
+            next = current.next
+            current.next = previous                     # Same thing as iterative method, this time we use recursion
+            previous = current                          # Instead of a loop.
+            current = next
+            return reverse(current, previous)
+        self.head = reverse(current=self.head, previous=None)
+
+    def sorted_merge(self, llist):
+        p1 = self.head
+        p2 = llist.head
+        q = None
+
+        if not p1:
+            return p2
+        if not p2:
+            return p1
+
+        if p1 and p2:
+            if p1.data <= p2.data:
+                q = p1
+                p1 = q.next
+            else:
+                q = p2
+                p2 = q.next
+            new_head = q
+        while p1 and p2:
+            if p1.data <= p2.data:
+                q.next = p1
+                q = p1
+                p1 = q.next
+            else:
+                q.next = p2
+                q = p2
+                p2 = q.next
+        if not p1:
+            q.next = p2
+        if not p2:
+            q.next = p1
+        return new_head
 
 
 lst1 = LinkedList()
-lst1.append("A")
-lst1.append("B")
-lst1.append("C")
-lst1.delete_node("C")
-lst1.prepend("D")
-lst1.delete_by_pos(0)
-lst1.insert_after_node(lst1.head.next, "E")
-print(lst1.iter_length())
-print(lst1.recursion_length(lst1.head))
-lst1.swap_node("A", "E")
+lst2 = LinkedList()
+lst1.append(1)
+lst1.append(4)
+lst1.append(6)
+lst2.append(2)
+lst2.append(3)
+lst2.append(7)
+lst2.append(10)
+lst1.sorted_merge(lst2)
 lst1.print_linked_list()
+
