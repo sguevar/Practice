@@ -174,6 +174,63 @@ class LinkedList:
             q.next = p1
         return new_head
 
+    def print_nth_from_last(self, n):
+        total_len = self.len_iterative()            # We get the length, and remove 1 from the length
+        cur = self.head                             # every time we go down a node until we reach the
+        while cur:                                  # node we want
+            if total_len == n:
+                print(cur.data)
+                return cur.data
+            total_len -= 1
+            cur = cur.next
+        if cur is None:
+            return
+
+    def count_occurences_iterative(self, data):
+        count = 0
+        cur = self.head
+        while cur:
+            if cur.data == data:
+                count += 1
+            cur = cur.next
+        return count
+
+    def rotate(self, k):
+        if self.head and self.head.next:
+            p = self.head
+            q = self.head
+            prev = None
+            count = 0
+
+            while p and count < k:
+                prev = p
+                p = p.next
+                q = q.next
+                count += 1
+            p = prev
+            while q:
+                prev = q
+                q = q.next
+            q = prev
+
+            q.next = self.head
+            self.head = p.next
+            p.next = None
+
+    def is_palindrome(self):
+        # Solution 2:
+        p = self.head
+        s = []
+        while p:
+            s.append(p.data)
+            p = p.next
+        p = self.head
+        while p:
+            data = s.pop()
+            if p.data != data:
+                return False
+            p = p.next
+        return True
 
 lst1 = LinkedList()
 lst2 = LinkedList()
